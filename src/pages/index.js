@@ -46,7 +46,9 @@ export default function Home() {
 
       <main style={styles.main}>
         <h2>📝 Describe the symptoms of your crop</h2>
+        <label htmlFor="symptom-input" style={{ fontWeight: 'bold' }}>Crop Symptoms:</label>
         <textarea
+          id="symptom-input"
           value={symptoms}
           onChange={(e) => setSymptoms(e.target.value)}
           placeholder="e.g., yellow spots on tomato leaves, white powder on stems..."
@@ -54,18 +56,24 @@ export default function Home() {
           style={styles.textarea}
         />
 
-        <button onClick={handleDiagnose} style={styles.button} disabled={loading}>
+        <button
+          onClick={handleDiagnose}
+          style={{ ...styles.button, opacity: loading ? 0.6 : 1 }}
+          disabled={loading}
+          type="button"
+        >
           {loading ? 'Analyzing...' : 'Diagnose Now'}
         </button>
 
-        {error && <p style={styles.error}>{error}</p>}
-
-        {result && (
-          <div style={styles.resultBox}>
-            <h3>🧬 AI Diagnosis</h3>
-            <p>{result}</p>
-          </div>
-        )}
+        <div aria-live="polite" style={{ marginTop: '1rem' }}>
+          {error && <p style={styles.error}>{error}</p>}
+          {result && (
+            <div style={styles.resultBox}>
+              <h3>🧬 AI Diagnosis</h3>
+              <p>{result}</p>
+            </div>
+          )}
+        </div>
       </main>
 
       <footer style={styles.footer}>
@@ -103,6 +111,7 @@ const styles = {
     border: '1px solid #ccc',
     marginBottom: '1rem',
     backgroundColor: '#fff',
+    resize: 'vertical',
   },
   button: {
     padding: '0.75rem 1.5rem',
@@ -116,6 +125,7 @@ const styles = {
   error: {
     color: 'red',
     marginTop: '1rem',
+    fontWeight: 'bold',
   },
   resultBox: {
     backgroundColor: '#ffffff',
